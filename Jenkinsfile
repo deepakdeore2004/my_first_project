@@ -1,5 +1,11 @@
 #!groovy
 
+/* 
+Package dependencies:
+    - jq
+    - curl
+*/
+
 properties([pipelineTriggers([pollSCM('H H * * *')])])
 
 pipeline {
