@@ -1,18 +1,24 @@
 #!groovy
 
-properties([pipelineTriggers([pollSCM('H/5 * * * *')])])
+properties([pipelineTriggers([pollSCM('H H * * *')])])
 
 pipeline {
    agent any
+   
    stages {
-      stage('CheckOut istio latest tag release') {
+       
+      stage('CheckOut istio latest release') {
           steps {
+              // "variable" scope is local in environment block, "script" makes the variable global
+              script {
+                TAG = sh(returnStdout: true, script: "curl --silent https://api.github.com/repos/istio/istio/releases/latest | jq -r .tag_name").trim()
+              }
               checkout(
                   [
                     $class: 'GitSCM', 
                     branches: [
                         [
-                          name: "refs/tags/*"
+                          name: "refs/tags/${TAG}"
                         ]
                     ], 
                     doGenerateSubmoduleConfigurations: false, 
@@ -29,7 +35,7 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs: [
                         [
-                            url: "https://github.com/deepakdeore2004/my_first_project.git"
+                            url: "https://github.com/istio/istio.git"
                         ]
                     ]
                   ]
@@ -45,25 +51,19 @@ pipeline {
       }
 
       stage('Archive') {
-        environment {
-            // Get latest tag number
-            TAG = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
-        }          
          steps {
             echo "====== Checked out tag version: ${TAG} ======"
             // Archive gateway helm chart
             echo "Archiving the helm chart"
-            sh '''
-                cat README
-                tar czf gw-${TAG}.tar.gz README jabberd_guide.pdf
-                #install/kubernetes/helm/istio/charts/gateways
-            '''
+            sh """
+                tar czf gateway-${TAG}.tar.gz -C install/kubernetes/helm/istio/charts/ gateways
+            """
          }
 
          post {
             success {
                echo "Created the archive"
-               sh "ls -lR"
+               sh "ls -l"
             }
          }
       }
