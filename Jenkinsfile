@@ -6,7 +6,12 @@ Package dependencies:
     - curl
 */
 
-properties([pipelineTriggers([pollSCM('H H * * *')])])
+properties(
+    [
+        pipelineTriggers([pollSCM('H H * * *')])
+        buildDiscarder(logRotator(numToKeepStr: '3'))
+    ]
+)
 
 pipeline {
    agent any
