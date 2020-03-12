@@ -58,7 +58,9 @@ pipeline {
       }
        
       stage('Execute') {
-        code.example1()
+          steps {
+            code.example1()
+          }
       }
        
       stage('Cleanup old archives') {
