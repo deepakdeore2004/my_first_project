@@ -8,10 +8,6 @@ Package dependencies:
 
 properties([pipelineTriggers([pollSCM('H H * * *')])])
 
-node {       
-   load "example.groovy"
-}
-
 pipeline {
    agent any
    
@@ -53,6 +49,10 @@ pipeline {
           }
       }
 
+      node {       
+        load "example.groovy"
+      }
+       
       stage('Cleanup old archives') {
           steps {
             echo "Cleaning up *.gz"
