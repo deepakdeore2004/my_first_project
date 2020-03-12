@@ -49,8 +49,16 @@ pipeline {
           }
       }
 
-      node {       
-        load "example.groovy"
+      stage('Load groovy') {
+          steps {
+              script {
+                  def util = load("${env.WORKSPACE}/example.groovy")
+              }
+          }
+      }
+       
+      stage('Execute') {
+        code.example1()
       }
        
       stage('Cleanup old archives') {
