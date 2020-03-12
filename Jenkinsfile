@@ -52,7 +52,7 @@ pipeline {
       stage('Load groovy') {
           steps {
               script {
-                  def util = load("${env.WORKSPACE}/example.groovy")
+                  def util = load("example.groovy")
               }
           }
       }
