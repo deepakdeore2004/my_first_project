@@ -12,6 +12,13 @@ pipeline {
    agent any
    
    stages {
+      stage('Load') {
+         code = load 'example.groovy'
+      }
+      
+      stage('Execute') {
+        code.example1()
+      }
        
       stage('CheckOut istio latest release') {
           steps {
