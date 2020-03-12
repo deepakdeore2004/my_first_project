@@ -8,18 +8,15 @@ Package dependencies:
 
 properties([pipelineTriggers([pollSCM('H H * * *')])])
 
+node {       
+   load "example.groovy"
+}
+
 pipeline {
    agent any
    
    stages {
-      stage('Load') {
-         code = load 'example.groovy'
-      }
-      
-      stage('Execute') {
-        code.example1()
-      }
-       
+
       stage('CheckOut istio latest release') {
           steps {
               // "variable" scope is local in environment block, "script" makes the variable global
