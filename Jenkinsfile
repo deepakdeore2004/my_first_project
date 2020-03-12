@@ -8,7 +8,7 @@ Package dependencies:
 
 properties(
     [
-        pipelineTriggers([pollSCM('H H * * *')])
+        pipelineTriggers([pollSCM('H H * * *')]),
         buildDiscarder(logRotator(numToKeepStr: '3'))
     ]
 )
