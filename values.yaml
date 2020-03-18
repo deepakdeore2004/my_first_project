@@ -1,0 +1,56 @@
+enabled: true
+
+custom-istio-ingressgateway:
+  enabled: false
+
+#### CUSTOM GW START ####  
+custom-istio-ingressgateway:
+  enabled: true
+  labels:
+    app: custom-istio-ingressgateway
+
+  autoscaleEnabled: true
+  autoscaleMin: 1
+  autoscaleMax: 5
+  rollingMaxSurge: 100%
+  rollingMaxUnavailable: 25%
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+  cpu:
+    targetAverageUtilization: 80
+
+  loadBalancerSourceRanges: []
+
+  serviceAnnotations:
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0 # this will create internal ELB, remove/ comment if external ELB is needed
+      # Update the tags, these tags will be applied to the ELB
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "BUSINESSUNIT=PUT-THE-BU,APPLICATIONROLE=ISTIO-INGRESS-GATEWAY"
+
+  podAnnotations: {}
+  type: LoadBalancer #change to NodePort, ClusterIP or LoadBalancer if need be
+
+  #externalTrafficPolicy: Local #change to Local to preserve source IP or Cluster for default behaviour or leave commented out
+
+  ports:
+    ## You can add custom gateway ports
+    # Note that AWS ELB will by default perform health checks on the first port
+    # on this list. Setting this to the health check port will ensure that health
+    # checks always work. https://github.com/istio/istio/issues/12503
+  - port: 80
+    name: http2
+  - port: 443
+    name: https
+  secretVolumes:
+  - name: customgateway-certs
+    secretName: istio-customgateway-certs
+    mountPath: /etc/istio/customgateway-certs
+  - name: customgateway-ca-certs
+    secretName: istio-customgateway-ca-certs
+    mountPath: /etc/istio/customgateway-ca-certs
+#### CUSTOM GW END ####    
