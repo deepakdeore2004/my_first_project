@@ -1,3 +1,4 @@
+# some comment
 enabled: true
 
 custom-istio-ingressgateway:
