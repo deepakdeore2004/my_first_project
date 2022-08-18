@@ -34,8 +34,10 @@ jobs:
           if [[ ! -z "$all_files" ]];
           then
             for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-            if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
-              echo "dir: `dirname $file`"
-          done
+              echo "$file was changed"
+            
+              if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
+                echo "dir: `dirname $file`"
+              fi
+            done
           fi
