@@ -33,7 +33,7 @@ jobs:
           all_files="${{ steps.file_changes.outputs.files }}"
           if [[ ! -z "$all_files" ]];
           then
-            for file in "${{ steps.changed-files.outputs.all_changed_files }}"; do
+            for file in $all_files; do
               echo "$file was changed"
             
               if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
