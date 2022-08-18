@@ -40,9 +40,5 @@ jobs:
               fi
             done
           fi
-          echo "::set-env name=WORK_DIR::$WORK_DIR"
-          
-          # enable workflow command processing
-          echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
       
       - run: echo workDir = "${{ env.WORK_DIR }}"
