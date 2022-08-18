@@ -42,3 +42,8 @@ jobs:
           fi
       
       - run: echo workDir = "${{ env.WORK_DIR }}"
+
+  use-var:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo ${{jobs.find-files.steps[*].env}}
