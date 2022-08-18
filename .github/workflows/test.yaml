@@ -41,3 +41,5 @@ jobs:
             done
           fi
           echo "::set-env name=WORK_DIR::$WORK_DIR"
+      
+      - run: echo workDir = $WORK_DIR
