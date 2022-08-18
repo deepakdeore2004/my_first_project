@@ -36,10 +36,13 @@ jobs:
               echo "$file was changed"
             
               if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
-                WORK_DIR=`dirname $file`
+                WORK_DIR=`dirname $file` >> $GITHUB_ENV
               fi
             done
           fi
           echo "::set-env name=WORK_DIR::$WORK_DIR"
+          
+          # enable workflow command processing
+          echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
       
-      - run: echo workDir = $WORK_DIR
+      - run: echo workDir = "${{ env.WORK_DIR }}"
