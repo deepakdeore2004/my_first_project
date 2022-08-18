@@ -30,10 +30,9 @@ jobs:
         # "bash {0}" will make all commands run regardless of any one command fails
         shell: bash {0}
         run: |
-          changed_files="${{ steps.changed-files.outputs.all_changed_files }}"
-          if [[ ! -z "$changed_files" ]];
-          then
-            for file in $all_files; do
+          all_files="${{ steps.file_changes.outputs.files }}"
+          if [[ ! -z "$all_files" ]]; then
+            for file in "${{ steps.file_changes.outputs.all_changed_files }}"; do
               echo "$file was changed"
             
               if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
