@@ -36,8 +36,7 @@ jobs:
               echo "$file was changed"
             
               if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
-                echo WORK_DIR=`dirname $file` >> $GITHUB_ENV              
-                echo $WORK_DIR
+                echo WORK_DIR=`dirname $file` >> $GITHUB_ENV
               fi
             done
           fi
