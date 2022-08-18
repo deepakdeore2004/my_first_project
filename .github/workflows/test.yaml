@@ -36,7 +36,8 @@ jobs:
               echo "$file was changed"
             
               if [[ "$(basename $file)" == "main.tf" && -n $(echo "$file" |grep "clusters/") ]]; then
-                echo "dir: `dirname $file`"
+                WORK_DIR=`dirname $file`
               fi
             done
           fi
+          echo "::set-env name=WORK_DIR::$WORK_DIR"
